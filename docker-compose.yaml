@@ -1,17 +1,22 @@
 version: "3.3"
 
 services:
-  api:
+  django:
     build: ./api
+    command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+    volumes:
+      - ./api:/app/api
     ports:
       - "8000:8000"
-    volumes:
-      - ./api:/api
-    command: bash -c "python manage.py runserver 0.0.0.0:8000"
 
-  web:
+  react:
     build: ./frontend
+    command: ["npm", "start"]
+    volumes:
+      - ./frontend:/app/frontend
+      - node-modules:/app/frontend/node_modules
     ports:
       - "3000:3000"
-    volumes:
-      - ./frontend:/frontend
+
+volumes:
+  node-modules:
